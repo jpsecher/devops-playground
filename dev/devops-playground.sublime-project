@@ -1,10 +1,10 @@
 { "folders":
   [ { "path": ".."
     , "folder_exclude_patterns":
-      [
+      [ ".terraform"
       ]
     , "file_exclude_patterns":
-      [
+      [ "traefik/variables.tf"
       ]
     }
   ]
