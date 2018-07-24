@@ -39,7 +39,7 @@ resource "aws_security_group" "access-from-safe-ips" {
   ingress {
     from_port = 0,
     to_port = 0,
-    protocol = "tcp"
+    protocol = "-1"
     cidr_blocks = ["${split(",", var.safe-ips)}"]
   }
   egress {
@@ -50,30 +50,6 @@ resource "aws_security_group" "access-from-safe-ips" {
   }
   vpc_id = "${aws_vpc.experimental.id}"
 }
-
-# TODO: allow ping
-
-# resource "aws_security_group" "all-open" {
-#   tags {
-#     Description = "Wide open"
-#     Name = "all-open"
-#     managed-by = "terraform"
-#     repo = "${var.repository}"
-#     environment = "experimental"
-#   }
-#   ingress {
-#     from_port = 0,
-#     to_port = 0,
-#     protocol = "-1"
-#     cidr_blocks = ["0.0.0.0/0"]
-#   }
-#   egress {
-#     from_port = 0
-#     to_port = 0
-#     protocol = "-1"
-#     cidr_blocks = ["0.0.0.0/0"]
-#   }
-# }
 
 variable "cidr-prefix" {
   default = "172.16"

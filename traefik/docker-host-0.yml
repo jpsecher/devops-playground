@@ -1,0 +1,16 @@
+---
+- hosts: docker-host-0
+  remote_user: ubuntu
+  become: yes
+  become_user: root
+  become_method: sudo
+  vars:
+    docker_pkg_name: docker-ce=18.03.1~ce-0~ubuntu
+  roles:
+    - host/only-allow-provision-once
+    - package-manager/apt-dist-upgrade
+    - docker/engine-install
+    - docker/regular-cleanup
+
+## Effectuated by:
+## ansible-playbook -i inventory.ini docker-host-0.yml

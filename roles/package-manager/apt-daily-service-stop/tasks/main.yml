@@ -1,0 +1,6 @@
+---
+  - name: adding stop-apt-daily-service.sh
+    copy: src=stop-apt-daily-service.sh dest=/stop-apt-daily-service.sh owner=root mode=0755
+
+  - shell: '/stop-apt-daily-service.sh'
+
