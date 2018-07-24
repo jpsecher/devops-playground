@@ -1,9 +1,5 @@
 # Træfik with certificates.
 
-Set `AWS_PROFILE` to match your AWS settings.
-
-
-
 ## Plan 
 
 - [ ] Deploy a Docker host on AWS.

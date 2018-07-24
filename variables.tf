@@ -17,3 +17,7 @@ variable "aws-key-name" {
   # Must be one of
   # https://eu-west-1.console.aws.amazon.com/ec2/v2/home?region=eu-west-1#KeyPairs:sort=keyName
 }
+
+variable "bucket-name" {
+  default = "kaleidoscope-terraform-state"
+}

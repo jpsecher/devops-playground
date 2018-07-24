@@ -4,7 +4,11 @@
       [ ".terraform"
       ]
     , "file_exclude_patterns":
-      [ "traefik/variables.tf"
+      [ ".terraform.tfstate.lock.info"
+      , "foundation/variables.tf"
+      , "traefik/ansible.cfg"
+      , "traefik/secrets.tf"
+      , "traefik/variables.tf"
       ]
     }
   ]
