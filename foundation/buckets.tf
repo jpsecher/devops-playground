@@ -11,11 +11,6 @@ resource "aws_s3_bucket_policy" "remote-state-bucket-access" {
   policy = "${data.aws_iam_policy_document.remote-state-bucket-access.json}"
 }
 
-# resource "aws_iam_policy" "remote-state-bucket-access" {
-#   name = "remote-state-bucket-access"
-#   policy = "${data.aws_iam_policy_document.remote-state-bucket-access.json}"
-# }
-
 data "aws_iam_policy_document" "remote-state-bucket-access" {
   statement {
     effect = "Allow"
@@ -25,8 +20,8 @@ data "aws_iam_policy_document" "remote-state-bucket-access" {
     ]
     resources = ["arn:aws:s3:::${aws_s3_bucket.remote-state.id}"]
     principals {
-      type = "*"
-      identifiers = ["*"]
+      type = "AWS"
+      identifiers = ["${data.aws_caller_identity.current.account_id}"]
     }
   }
   statement {
@@ -38,8 +33,10 @@ data "aws_iam_policy_document" "remote-state-bucket-access" {
     ]
     resources = ["arn:aws:s3:::${aws_s3_bucket.remote-state.id}/*"]
     principals {
-      type = "*"
-      identifiers = ["*"]
+      type = "AWS"
+      identifiers = ["${data.aws_caller_identity.current.account_id}"]
     }
   }
 }
+
+data "aws_caller_identity" "current" {}
