@@ -11,6 +11,7 @@
     - package-manager/apt-dist-upgrade
     - docker/engine-install
     - docker/regular-cleanup
+    - docker/swarm-master
 
 ## Effectuated by:
 ## ansible-playbook -i inventory.ini docker-host-0.yml

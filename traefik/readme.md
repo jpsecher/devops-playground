@@ -6,6 +6,7 @@
 1. Run `terraform apply`.
 1. Copy the hostnames into the `inventory.ini` so that Ansible knows which hosts to provision.
 1. Run `ansible-playbook docker-host-0`.
+1. Copy the `worker_token` if needed.
 
 ## Plan 
 
