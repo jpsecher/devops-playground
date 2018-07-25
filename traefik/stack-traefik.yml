@@ -3,7 +3,7 @@ services:
 
   reverse-proxy:
     image: traefik
-    command: --api --docker --docker.swarmMode --docker.watch
+    command: --api --docker --docker.swarmmode --docker.watch --loglevel=DEBUG
     ports:
       - "80:80"
       - "8080:8080"
@@ -16,8 +16,7 @@ services:
       placement:
         constraints:
           - node.role == manager
-      labels:
-        - "traefik.enable=false"
+      replicas: 1
 
 networks:
 

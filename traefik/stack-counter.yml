@@ -30,6 +30,10 @@ services:
         - "traefik.port=9000"
         - "traefik.frontend.rule=Path:/visualizer"
         - "traefik.backend=visualizer"
+        #- "traefik.docker.network=traefik_skynet"
+        #- "traefik.backend.loadbalancer.stickiness=false"
+        #- "traefik.tags=lb-counter"
+      replicas: 1
 
 networks:
 
