@@ -1,0 +1,25 @@
+version: '3.3'
+services:
+
+  reverse-proxy:
+    image: traefik
+    command: --api --docker --docker.swarmMode --docker.watch
+    ports:
+      - "80:80"
+      - "8080:8080"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - /dev/null:/traefik.toml
+    networks:
+      - skynet
+    deploy:
+      placement:
+        constraints:
+          - node.role == manager
+      labels:
+        - "traefik.enable=false"
+
+networks:
+
+  skynet:
+    driver: overlay

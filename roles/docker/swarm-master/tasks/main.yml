@@ -28,6 +28,6 @@
 
   - debug:
       msg:
-        - "Insert into group_vars/all:"
         - "worker_token: {{ worker_token.stdout }}"
+        - "manager_token: {{ manager_token.stdout }}"
         - "master_ip: {{ master_ip.stdout }}"
