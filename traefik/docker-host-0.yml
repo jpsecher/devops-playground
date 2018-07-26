@@ -12,7 +12,6 @@
     - docker/engine-install
     - docker/regular-cleanup
     - docker/swarm-master
-    - traefik/certificate-from-letsencrypt
 
 ## Effectuated by:
 ## ansible-playbook -i inventory.ini docker-host-0.yml

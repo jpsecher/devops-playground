@@ -38,26 +38,3 @@ services:
     image: jpsecher/ip-and-counter
     labels:
       - "traefik.frontend.rule=Path:/counter"
-
-# [entryPoints]
-#   [entryPoints.http]
-#   address = ":80"
-#     [entryPoints.http.redirect]
-#     entryPoint = "https"
-#   [entryPoints.https]
-#   address = ":443"
-#   [entryPoints.https.tls]
-
-# [retry]
-
-# [docker]
-# endpoint = "unix:///var/run/docker.sock"
-# domain = "test.kaleidoscope.software"
-# exposedByDefault = false
-
-# [acme]
-# caServer = "https://acme-staging-v02.api.letsencrypt.org/directory"
-#   [acme.httpChallenge]
-#   entryPoint = "http"
-#   [acme.domains]
-#   main = "test.kaleidoscope.software"
