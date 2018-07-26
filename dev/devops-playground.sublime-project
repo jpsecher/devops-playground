@@ -2,6 +2,8 @@
   [ { "path": ".."
     , "folder_exclude_patterns":
       [ ".terraform"
+      , "traefik/group_vars"
+      , "traefik/roles"
       ]
     , "file_exclude_patterns":
       [ ".terraform.tfstate.lock.info"

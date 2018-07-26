@@ -9,6 +9,9 @@ services:
       - "8080:8080"
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
+      - /opt/traefik/traefik.toml:/traefik.toml
+      - /opt/traefik/acme.json:/acme.json
+    restart: always
 
   whoami:
     image: emilevauge/whoami

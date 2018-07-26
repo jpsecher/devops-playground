@@ -7,6 +7,14 @@ variable "machine" {
   default = "t2.micro"
 }
 
+variable "cidr-prefix" {
+  default = "172.16"
+}
+
+variable "main-zone" {
+  default = "kaleidoscope.software"
+}
+
 resource "aws_instance" "docker-host" {
   count = 1
   tags {
@@ -18,7 +26,10 @@ resource "aws_instance" "docker-host" {
   }
   ami = "${var.ami}"
   instance_type = "${var.machine}"
-  vpc_security_group_ids = ["${aws_security_group.access-from-safe-ips.id}"]
+  vpc_security_group_ids = [
+    "${aws_security_group.access-from-safe-ips.id}",
+    "${aws_security_group.access-to-http-and-https.id}"
+  ]
   root_block_device = {
     delete_on_termination = true
   }
@@ -26,6 +37,47 @@ resource "aws_instance" "docker-host" {
   depends_on = ["aws_internet_gateway.experimental"]
   subnet_id = "${element(aws_subnet.experimental.*.id,count.index)}"
   availability_zone = "${element(data.aws_availability_zones.available.names,count.index)}"
+}
+
+resource "aws_route53_record" "docker-host" {
+  zone_id = "${data.aws_route53_zone.current.zone_id}"
+  name = "test.${data.aws_route53_zone.current.name}"
+  type = "A"
+  ttl = 60
+  records = ["${aws_instance.docker-host.public_ip}"]
+}
+
+data "aws_route53_zone" "current" {
+  name = "kaleidoscope.software"
+}
+
+resource "aws_security_group" "access-to-http-and-https" {
+  tags {
+    Name = "access-to-http-and-https"
+    Description = "Access to HTTP(S)"
+    managed-by = "terraform"
+    repo = "${var.repository}"
+    environment = "experimental"
+  }
+  ingress {
+    from_port = 80
+    to_port = 80
+    protocol = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+  ingress {
+    from_port = 443
+    to_port = 443
+    protocol = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+  egress {
+    from_port = 0
+    to_port = 0
+    protocol = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+  vpc_id = "${aws_vpc.experimental.id}"
 }
 
 resource "aws_security_group" "access-from-safe-ips" {
@@ -49,10 +101,6 @@ resource "aws_security_group" "access-from-safe-ips" {
     cidr_blocks = ["0.0.0.0/0"]
   }
   vpc_id = "${aws_vpc.experimental.id}"
-}
-
-variable "cidr-prefix" {
-  default = "172.16"
 }
 
 resource "aws_vpc" "experimental" {
