@@ -1,15 +1,31 @@
 version: '3'
 services:
 
-  reverse-proxy:
+  proxy:
     image: traefik
-    command: --api --docker
+    command:
+      - --logLevel=INFO
+      - --api
+      - --defaultentrypoints=http,https
+      #- --entryPoints=Name:http Address::80 Redirect.EntryPoint:https
+      - --entryPoints=Name:http Address::80
+      - --entryPoints=Name:https Address::443 TLS
+      - --docker
+      - --docker.watch
+      - --acme
+      - --acme.onHostRule
+      - --acme.storage=/acme.json
+      - --acme.email=jpsecher@gmail.com
+      - --acme.entryPoint=https
+      - --acme.domains=test.kaleidoscope.software
+      - --acme.httpChallenge.entryPoint=http
+      - --acme.caServer=https://acme-staging-v02.api.letsencrypt.org/directory
     ports:
       - "80:80"
+      - "443:443"
       - "8080:8080"
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
-      - /opt/traefik/traefik.toml:/traefik.toml
       - /opt/traefik/acme.json:/acme.json
     restart: always
 
@@ -22,3 +38,26 @@ services:
     image: jpsecher/ip-and-counter
     labels:
       - "traefik.frontend.rule=Path:/counter"
+
+# [entryPoints]
+#   [entryPoints.http]
+#   address = ":80"
+#     [entryPoints.http.redirect]
+#     entryPoint = "https"
+#   [entryPoints.https]
+#   address = ":443"
+#   [entryPoints.https.tls]
+
+# [retry]
+
+# [docker]
+# endpoint = "unix:///var/run/docker.sock"
+# domain = "test.kaleidoscope.software"
+# exposedByDefault = false
+
+# [acme]
+# caServer = "https://acme-staging-v02.api.letsencrypt.org/directory"
+#   [acme.httpChallenge]
+#   entryPoint = "http"
+#   [acme.domains]
+#   main = "test.kaleidoscope.software"
