@@ -1,0 +1,18 @@
+---
+  - name: Configuration directory for traefik
+    file:
+      path: /opt/traefik
+      state: directory
+      mode: 0755
+
+  - name: Configuration file for Træfik
+    copy:
+      src: traefik.toml
+      dest: /opt/traefik/traefik.toml
+      mode: 0644
+
+  - name: Ensure certificate file exists
+    copy:
+      content: ""
+      dest: /opt/traefik/acme.json
+      mode: 0600
