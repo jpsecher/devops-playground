@@ -1,3 +1,8 @@
+variable "sub-zone" {
+  description = "DNS subdomain of main-zone"
+  default = "test"
+}
+
 variable "ami" {
   description = "Ubuntu LTS 16.04 AMD64 HVM EBS"
   default = "ami-f90a4880"
@@ -8,11 +13,8 @@ variable "machine" {
 }
 
 variable "cidr-prefix" {
+  description = "Private 16 bit CIDR prefix for the VPC"
   default = "172.16"
-}
-
-variable "main-zone" {
-  default = "kaleidoscope.software"
 }
 
 resource "aws_instance" "docker-host" {
@@ -22,7 +24,7 @@ resource "aws_instance" "docker-host" {
     Description = "Docker host"
     managed-by = "terraform"
     repo = "${var.repository}"
-    environment = "experimental"
+    environment = "${var.sub-zone}"
   }
   ami = "${var.ami}"
   instance_type = "${var.machine}"
@@ -41,14 +43,10 @@ resource "aws_instance" "docker-host" {
 
 resource "aws_route53_record" "docker-host" {
   zone_id = "${data.aws_route53_zone.current.zone_id}"
-  name = "test.${data.aws_route53_zone.current.name}"
+  name = "${var.sub-zone}.${data.aws_route53_zone.current.name}"
   type = "A"
   ttl = 60
   records = ["${aws_instance.docker-host.public_ip}"]
-}
-
-data "aws_route53_zone" "current" {
-  name = "kaleidoscope.software"
 }
 
 resource "aws_security_group" "access-to-http-and-https" {
@@ -57,7 +55,7 @@ resource "aws_security_group" "access-to-http-and-https" {
     Description = "Access to HTTP(S)"
     managed-by = "terraform"
     repo = "${var.repository}"
-    environment = "experimental"
+    environment = "${var.sub-zone}"
   }
   ingress {
     from_port = 80
@@ -86,7 +84,7 @@ resource "aws_security_group" "access-from-safe-ips" {
     Description = "Access from safe IPs"
     managed-by = "terraform"
     repo = "${var.repository}"
-    environment = "experimental"
+    environment = "${var.sub-zone}"
   }
   ingress {
     from_port = 0,
@@ -105,11 +103,11 @@ resource "aws_security_group" "access-from-safe-ips" {
 
 resource "aws_vpc" "experimental" {
   tags {
-    Name = "experimental"
+    Name = "${var.sub-zone}"
     Description = "Default VPC"
     managed-by = "terraform"
     repo = "${var.repository}"
-    environment = "experimental"
+    environment = "${var.sub-zone}"
   }
   cidr_block = "${var.cidr-prefix}.0.0/16"
   enable_dns_hostnames = true
@@ -117,22 +115,22 @@ resource "aws_vpc" "experimental" {
 
 resource "aws_internet_gateway" "experimental" {
   tags {
-    Name = "experimental"
+    Name = "${var.sub-zone}"
     Description = "Default gateway"
     managed-by = "terraform"
     repo = "${var.repository}"
-    environment = "experimental"
+    environment = "${var.sub-zone}"
   }
   vpc_id = "${aws_vpc.experimental.id}"
 }
 
 resource "aws_subnet" "experimental" {
   tags {
-    Name = "experimental"
+    Name = "${var.sub-zone}"
     Description = "Default subnet"
     managed-by = "terraform"
     repo = "${var.repository}"
-    environment = "experimental"
+    environment = "${var.sub-zone}"
   }
   vpc_id = "${aws_vpc.experimental.id}"
   cidr_block = "${var.cidr-prefix}.${count.index}.0/24"
@@ -143,7 +141,7 @@ resource "aws_subnet" "experimental" {
 
 resource "aws_route_table" "experimental" {
   tags {
-    Name = "experimental"
+    Name = "${var.sub-zone}"
     Description = "Default route table"
     ManagedBy = "terraform"
     Repo = "infrastructure"
@@ -160,6 +158,10 @@ resource "aws_route_table_association" "experimental" {
   subnet_id = "${element(aws_subnet.experimental.*.id,count.index)}"
   route_table_id = "${aws_route_table.experimental.id}"
   count = 1
+}
+
+data "aws_route53_zone" "current" {
+  name = "${var.main-zone}"
 }
 
 data "aws_availability_zones" "available" {}

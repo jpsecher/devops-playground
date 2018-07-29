@@ -2,13 +2,9 @@ variable "repository" {
 	default = "jpsecher/devops-playground"
 }
 
-provider "aws" {
-  region = "${var.aws-region}"
-  version = "~> 1.28"
-}
-
-variable "aws-region" {
-  default = "eu-west-1"
+variable "main-zone" {
+  description = "DNS zone"
+  default = "kaleidoscope.software"
 }
 
 variable "aws-key-name" {
@@ -20,4 +16,13 @@ variable "aws-key-name" {
 
 variable "bucket-name" {
   default = "kaleidoscope-terraform-state"
+}
+
+provider "aws" {
+  region = "${var.aws-region}"
+  version = "~> 1.28"
+}
+
+variable "aws-region" {
+  default = "eu-west-1"
 }

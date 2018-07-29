@@ -6,7 +6,8 @@
       , "traefik/roles"
       ]
     , "file_exclude_patterns":
-      [ ".terraform.tfstate.lock.info"
+      [ "*.tfstate.backup"
+      , ".terraform.tfstate.lock.info"
       , "foundation/variables.tf"
       , "traefik/ansible.cfg"
       , "traefik/secrets.tf"
