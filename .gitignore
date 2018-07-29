@@ -1,0 +1,4 @@
+*.retry
+.terraform/
+/ansible.cfg
+/secrets.tf

@@ -1,0 +1,12 @@
+#!/bin/bash
+
+# Cleanup script for Docker servers.
+
+# Remove logfiles that have been rotated but not zipped for some reason.
+rm -fr /var/log/*.1
+
+# Remove containers that are not running.
+docker container prune -f
+
+# Remove unused docker images.
+docker image prune -f

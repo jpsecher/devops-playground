@@ -1,0 +1,7 @@
+- name: Check if there are packages available to be installed/upgraded
+  command: /usr/lib/update-notifier/apt-check --package-names
+  register: packages
+
+- name: Upgrade all packages to the latest version
+  apt: update_cache=yes upgrade=dist
+  when: packages.stderr != ""

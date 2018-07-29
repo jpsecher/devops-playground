@@ -1,0 +1,42 @@
+version: '3.5'
+services:
+
+  # counter:
+  #   image: jpsecher/ip-and-counter
+  #   hostname: 'counter-{{.Task.Slot}}'
+  #   networks:
+  #     - skynet
+  #   deploy:
+  #     replicas: 3
+  #     labels:
+  #       #- "traefik.port=80"
+  #       - "traefik.frontend.rule=Path:/counter"
+  #       - "traefik.backend=counter"
+  #       #- "traefik.backend.loadbalancer.swarm=true"
+
+  visualizer:
+    image: dockersamples/visualizer:stable
+    volumes:
+      - "/var/run/docker.sock:/var/run/docker.sock"
+    networks:
+      - skynet
+    ports:
+      - "9000:8080"
+    deploy:
+      placement:
+        constraints:
+          - node.role == manager
+      labels:
+        - "traefik.port=9000"
+        - "traefik.frontend.rule=Path:/visualizer"
+        - "traefik.backend=visualizer"
+        #- "traefik.docker.network=traefik_skynet"
+        #- "traefik.backend.loadbalancer.stickiness=false"
+        #- "traefik.tags=lb-counter"
+      replicas: 1
+
+networks:
+
+  skynet:
+    external:
+      name: traefik_skynet

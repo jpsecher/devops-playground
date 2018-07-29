@@ -1,0 +1,14 @@
+---
+- stat: path=/ansibleExecuted
+  register: ansible_exec
+
+- block:
+  - when: ansible_exec.stat.exists == True
+    debug:
+      msg: "Ansible has been executed before on the host, ending playbook execution"
+
+  - meta: end_play
+    when: ansible_exec.stat.exists == True
+
+  - name: "Creating ansible exec file so its not possible to run ansible again on the host"
+    file: path="/ansibleExecuted" state=touch

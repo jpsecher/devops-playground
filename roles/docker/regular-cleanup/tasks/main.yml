@@ -1,0 +1,8 @@
+---
+  - name: Adding docker-cleanup to /etc/cron.hourly
+    copy:
+      src: "docker-cleanup"
+      dest: /etc/cron.hourly/docker-cleanup
+      owner: root
+      group: root
+      mode: 0755

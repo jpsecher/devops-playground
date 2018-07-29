@@ -1,10 +1,17 @@
 { "folders":
   [ { "path": ".."
     , "folder_exclude_patterns":
-      [
+      [ ".terraform"
+      , "traefik/group_vars"
+      , "traefik/roles"
       ]
     , "file_exclude_patterns":
-      [
+      [ "*.tfstate.backup"
+      , ".terraform.tfstate.lock.info"
+      , "foundation/variables.tf"
+      , "traefik/ansible.cfg"
+      , "traefik/secrets.tf"
+      , "traefik/variables.tf"
       ]
     }
   ]

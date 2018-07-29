@@ -1,0 +1,5 @@
+- name: Create empty file to hold the certificate from Let's Encrypt
+  file:
+    path: /etc/acme.json
+    mode: 0600
+    state: touch
