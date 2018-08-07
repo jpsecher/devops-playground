@@ -143,9 +143,9 @@ resource "aws_route_table" "experimental" {
   tags {
     Name = "${var.sub-zone}"
     Description = "Default route table"
-    ManagedBy = "terraform"
-    Repo = "infrastructure"
-    Organisation = "monolit"
+    managed-by = "terraform"
+    repo = "${var.repository}"
+    environment = "${var.sub-zone}"
   }
   vpc_id = "${aws_vpc.experimental.id}"
   route {

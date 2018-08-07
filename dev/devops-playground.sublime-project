@@ -2,16 +2,16 @@
   [ { "path": ".."
     , "folder_exclude_patterns":
       [ ".terraform"
-      , "traefik/group_vars"
-      , "traefik/roles"
+      , "traefik-lets-encrypt/group_vars"
+      , "traefik-lets-encrypt/roles"
       ]
     , "file_exclude_patterns":
       [ "*.tfstate.backup"
       , ".terraform.tfstate.lock.info"
       , "foundation/variables.tf"
-      , "traefik/ansible.cfg"
-      , "traefik/secrets.tf"
-      , "traefik/variables.tf"
+      , "traefik-lets-encrypt/ansible.cfg"
+      , "traefik-lets-encrypt/secrets.tf"
+      , "traefik-lets-encrypt/variables.tf"
       ]
     }
   ]
