@@ -2,7 +2,7 @@ resource "aws_lb" "nlb" {
   name = "lb-${var.environment}"
   load_balancer_type = "network"
   subnets = ["${aws_subnet.public.*.id}"]
-  enable_cross_zone_load_balancing = false
+  enable_cross_zone_load_balancing = true
   tags {
     managed-by = "terraform"
     repo = "${var.repository}"

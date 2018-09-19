@@ -12,6 +12,9 @@
 
 - [x] Deploy a Network LB with one Target Group on AWS.
 - [x] Deploy two hosts in a private network with a NAT gateway.
-- [ ] Put Docker Swarm on the hosts.
-- [ ] Run whoami in host mode on both hosts.
-- [ ] Make the LB forward traffic to the hosts.
+- [x] Run nginx on both hosts. (manually installed)
+- [x] Make the LB forward traffic to the hosts.
+
+https://forums.aws.amazon.com/thread.jspa?threadID=263245
+
+Good question! Don't know if this matches your configuration, but I deployed the sample web app on a new ECS cluster running in a private subnet (with Internet access through NAT instance). For the NLB, I selected the public subnet. I was then able to register the instance from the private subnet. Opened up for traffic from 10.0.0.0/16 to allow health checks, plus one more rule to cover my IP address. The health check took some time to stabilize, but after a short while I was able to access the web app. Adding/removing my IP address in the instance security group had the expected effect.

@@ -1,5 +1,5 @@
 variable "public-count" {
-  default = 1
+  default = 2
 }
 
 variable "private-count" {

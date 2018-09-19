@@ -3,7 +3,7 @@ resource "aws_subnet" "private" {
   vpc_id = "${aws_vpc.vpc.id}"
   cidr_block = "${var.cidr-prefix}.${15 - count.index}.0/24"
   availability_zone = "${element(data.aws_availability_zones.available.names,count.index)}"
-  map_public_ip_on_launch = true
+  #map_public_ip_on_launch = true
   tags {
     Name = "${var.environment}-private-${count.index}"
     managed-by = "terraform"
