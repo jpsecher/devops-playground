@@ -1,7 +1,7 @@
 resource "aws_lb" "nlb" {
   name = "lb-${var.environment}"
   load_balancer_type = "network"
-  subnets = ["${aws_subnet.private.*.id}"]
+  subnets = ["${aws_subnet.public.*.id}"]
   enable_cross_zone_load_balancing = false
   tags {
     managed-by = "terraform"
