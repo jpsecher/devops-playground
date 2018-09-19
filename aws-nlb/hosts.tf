@@ -5,7 +5,7 @@ resource "aws_instance" "docker-host" {
   vpc_security_group_ids = [
     "${aws_security_group.access-from-safe-ips.id}",
     "${aws_security_group.access-to-http.id}",
-    "${aws_security_group.access-from-vpc.id}"
+    "${aws_security_group.access-ssh-and-ping-from-vpc.id}"
   ]
   root_block_device = {
     delete_on_termination = true
@@ -55,19 +55,25 @@ resource "aws_security_group" "access-from-safe-ips" {
   }
 }
 
-resource "aws_security_group" "access-from-vpc" {
+resource "aws_security_group" "access-ssh-and-ping-from-vpc" {
   vpc_id = "${aws_vpc.vpc.id}"
   tags {
-    Name = "access-from-vpc"
-    Description = "Access from VPC"
+    Name = "access-ssh-and-ping-from-vpc"
+    Description = "Ping and SSH from VPC"
     managed-by = "terraform"
     repo = "${var.repository}"
     environment = "${var.environment}"
   }
   ingress {
-    from_port = 0
+    from_port = 8
     to_port = 0
-    protocol = "-1"
+    protocol = "icmp"
+    cidr_blocks = ["${aws_vpc.vpc.cidr_block}"]
+  }
+  ingress {
+    from_port = 22
+    to_port = 22
+    protocol = "tcp"
     cidr_blocks = ["${aws_vpc.vpc.cidr_block}"]
   }
 }
