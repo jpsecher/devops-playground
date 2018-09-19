@@ -12,6 +12,9 @@
       , "traefik-lets-encrypt/ansible.cfg"
       , "traefik-lets-encrypt/secrets.tf"
       , "traefik-lets-encrypt/variables.tf"
+      , "aws-nlb/ansible.cfg"
+      , "aws-nlb/secrets.tf"
+      , "aws-nlb/variables.tf"
       ]
     }
   ]
