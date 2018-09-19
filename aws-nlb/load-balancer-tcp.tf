@@ -1,10 +1,9 @@
 resource "aws_lb" "nlb" {
-  #name = "lb-${var.environment}"
+  name = "lb-${var.environment}"
   load_balancer_type = "network"
   subnets = ["${aws_subnet.private.*.id}"]
   enable_cross_zone_load_balancing = false
   tags {
-    Name = "lb-${var.environment}"
     managed-by = "terraform"
     repo = "${var.repository}"
     environment = "${var.environment}"
@@ -22,8 +21,8 @@ resource "aws_lb_listener" "http" {
 }
 
 resource "aws_lb_target_group" "http" {
-  name = "http-test"
-  port = 8080
+  name = "http-${var.environment}"
+  port = 80
   protocol = "TCP"
   vpc_id = "${aws_vpc.vpc.id}"
   target_type = "instance"

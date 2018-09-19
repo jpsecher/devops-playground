@@ -10,8 +10,8 @@
 
 ## Plan
 
-- [ ] Deploy a Network LB with one Target Group on AWS.
-- [ ] Deploy two hosts in a private network with a NAT gateway.
+- [x] Deploy a Network LB with one Target Group on AWS.
+- [x] Deploy two hosts in a private network with a NAT gateway.
 - [ ] Put Docker Swarm on the hosts.
 - [ ] Run whoami in host mode on both hosts.
 - [ ] Make the LB forward traffic to the hosts.

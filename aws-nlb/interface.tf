@@ -1,4 +1,8 @@
-variable "subnet-count" {
+variable "public-count" {
+  default = 1
+}
+
+variable "private-count" {
   default = 2
 }
 
